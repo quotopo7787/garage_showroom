@@ -29,7 +29,7 @@ public class User {
     private UserRole role;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status = UserStatus.ACTIVE;
+    private UserStatus status;
 
     @Enumerated(EnumType.STRING)
     private MechanicState mechanicState;

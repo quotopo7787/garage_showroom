@@ -30,22 +30,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain security(HttpSecurity http, DaoAuthenticationProvider provider) throws Exception {
         http
+                .authenticationProvider(provider)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/login", "/otp/**", "/register", "/assets/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(login -> login
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/", true)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login") // action của form
+                        .usernameParameter("email")   // ✅ tên input trùng form
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/admin", true)
+                        .failureUrl("/login?error")
+                        .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                );
-
-        http.authenticationProvider(authProvider());
+                .logout(l -> l.logoutUrl("/logout").logoutSuccessUrl("/login?logout").permitAll());
         return http.build();
     }
 }

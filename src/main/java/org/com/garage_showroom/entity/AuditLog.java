@@ -1,31 +1,36 @@
-package org.com.garage_showroom.entity;
-
 import jakarta.persistence.*;
-import lombok.*;
-
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
-@Table(name = "audit_logs")
+@Table(name = "audit_log")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class AuditLog {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    @Column(columnDefinition = "uuid")
+    private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User actorUser;
+    @Column(name = "entity_name", nullable = false, length = 64)
+    private String entityName;
 
+    @Column(name = "entity_id", columnDefinition = "uuid")
+    private UUID entityId; //
+
+    @Column(nullable = false, length = 16)
     private String action;
-    private String entity;
-    private String entityId;
+
+    @Column(name = "actor_user_id", columnDefinition = "uuid")
+    private UUID actorUserId;
 
     @Column(columnDefinition = "jsonb")
-    private String meta;
+    private String data;
 
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 }
