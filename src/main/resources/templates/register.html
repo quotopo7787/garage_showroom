@@ -1,34 +1,11 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="vi">
-<head>
-  <meta charset="UTF-8"/>
-  <title>Đăng ký tài khoản khách hàng</title>
-</head>
-<body>
-<h1>Đăng ký khách hàng</h1>
+<form th:action="@{/register}" method="post">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-<div th:if="${registerError}" style="color:red" th:text="${registerError}"></div>
-
-<form th:action="@{/register}" th:object="${req}" method="post">
-  <label>Email:</label>
-  <input type="email" th:field="*{email}"><br>
-  <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small><br>
-
-  <label>Mật khẩu:</label>
-  <input type="password" th:field="*{password}"><br>
-  <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small><br>
-
-  <label>Họ tên:</label>
-  <input type="text" th:field="*{name}"><br>
-  <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small><br>
-
-  <label>Số điện thoại:</label>
-  <input type="text" th:field="*{phone}"><br>
-  <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small><br>
-
+  <label>Họ tên</label><input name="name" required>
+  <label>Email</label><input type="email" name="email" required>
+  <label>Điện thoại</label><input name="phone">
+  <label>Mật khẩu</label><input type="password" name="password" required minlength="6">
   <button type="submit">Đăng ký</button>
 </form>
-
-<p><a th:href="@{/login}">Đã có tài khoản? Đăng nhập</a></p>
-</body>
-</html>

@@ -34,7 +34,8 @@ public class SecurityConfig {
         http
                 .authenticationProvider(provider)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/otp/**", "/register", "/assets/**").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/verify-otp", "/resend-otp",
+                                "/assets/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

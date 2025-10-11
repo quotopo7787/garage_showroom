@@ -34,9 +34,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy tài khoản với email: " + email));
 
         // Chỉ ADMIN đăng nhập bằng password; các role khác dùng OTP
-        if (user.getRole() != UserRole.ADMIN) {
-            throw new UsernameNotFoundException("Tài khoản này đăng nhập bằng OTP (không dùng mật khẩu)");
-        }
+//        if (user.getRole() != UserRole.ADMIN) {
+//            throw new UsernameNotFoundException("Tài khoản này đăng nhập bằng OTP (không dùng mật khẩu)");
+//        }
 
         if (user.getPassword() == null || user.getPassword().isBlank()) {
             throw new UsernameNotFoundException("Tài khoản chưa được đặt mật khẩu");
